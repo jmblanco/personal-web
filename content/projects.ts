@@ -31,15 +31,6 @@ export const FEATURED_PROJECTS: ProjectItem[] = [
     featured: true,
   },
   {
-    title: "Enterprise Unix & Cloud Workstation Automation",
-    category: "Platform & Infrastructure",
-    description:
-      "Herramientas y recetas de aprovisionamiento de estaciones de trabajo UNIX/Linux para ingenieros, estandarizando autenticación, entornos de shell seguros y herramientas esenciales de desarrollo.",
-    tags: ["Bash / Shell", "Linux", "DevEx", "Security Automation"],
-    githubUrl: "https://github.com/jmblanco/scripting",
-    featured: true,
-  },
-  {
     title: "Agentic Engineering Framework & Governance Hub",
     category: "AI & Agentic Systems",
     description:
