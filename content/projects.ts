@@ -40,21 +40,12 @@ export const FEATURED_PROJECTS: ProjectItem[] = [
     featured: true,
   },
   {
-    title: "Agentic Engineering Lifecycle Hub & Multi-Agent Framework",
+    title: "Agentic Engineering Framework & Governance Hub",
     category: "AI & Agentic Systems",
     description:
       "Framework y metodología operativa para orquestar equipos de agentes de IA autónomos con Human-in-the-Loop (HITL). Estandariza roles especializados (Product Spec, System Architect, TDD Implementer, QA Automation, Raptor Security Auditor y Release Engineer) para entrega de software empresarial determinista.",
     tags: ["Agentic AI", "Multi-Agent Systems", "Software Governance", "TDD", "HITL"],
     featured: true,
     statusBadge: "En Desarrollo · Q4 2026",
-  },
-  {
-    title: "Event-Driven Architecture (EDA) & Resilient Transactional Outbox",
-    category: "Architecture",
-    description:
-      "Blueprint de referencia arquitectónica para sistemas distribuidos de alta concurrencia. Combina el patrón Transactional Outbox, CDC (Change Data Capture) hacia Apache Kafka, contratos tipados con Schema Registry y sincronización CQRS para entornos financieros y corporativos.",
-    tags: ["Apache Kafka", "Event-Driven", "Transactional Outbox", "CQRS", "System Design"],
-    featured: true,
-    statusBadge: "Blueprint en Diseño",
   },
 ];
