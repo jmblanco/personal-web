@@ -1,0 +1,94 @@
+# -----------------------------------------------------------------------------
+# Valores por defecto para el Chart de Helm
+# -----------------------------------------------------------------------------
+
+replicaCount: 2
+
+image:
+  # Define aquí tu registro y nombre de imagen (ej. ghcr.io/tu-usuario/personal-web o docker.io/tu-usuario/web)
+  repository: "YOUR_IMAGE_REPOSITORY"
+  pullPolicy: IfNotPresent
+  # Tag de la imagen (dejar en blanco para usar appVersion del Chart o especificar 'latest', 'v1.0.0', etc.)
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations:
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  # - secretName: personal-web-tls
+  #   hosts:
+  #     - your-domain.com
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 15
+  timeoutSeconds: 3
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
