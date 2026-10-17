@@ -378,7 +378,14 @@ export function TerminalView() {
                   <div key={proj.title} className="p-4 rounded-lg bg-[#12131a] border border-neutral-800 space-y-2">
                     <div className="flex justify-between items-center text-xs">
                       <span className="font-bold text-white text-sm">{proj.title}</span>
-                      <span className="text-neutral-500">{proj.category}</span>
+                      <div className="flex items-center gap-2">
+                        {proj.statusBadge && (
+                          <span className="text-[10px] text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded bg-emerald-500/10">
+                            [{proj.statusBadge}]
+                          </span>
+                        )}
+                        <span className="text-neutral-500">{proj.category}</span>
+                      </div>
                     </div>
                     <p className="text-xs text-neutral-300 leading-relaxed">
                       {proj.description}

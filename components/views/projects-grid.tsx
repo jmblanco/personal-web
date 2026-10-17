@@ -44,9 +44,16 @@ export function ProjectsGrid() {
                     {project.title}
                   </span>
                 )}
-                <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500 shrink-0">
-                  {project.category}
-                </span>
+                <div className="flex items-center gap-2 shrink-0">
+                  {project.statusBadge && (
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      {project.statusBadge}
+                    </span>
+                  )}
+                  <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
+                    {project.category}
+                  </span>
+                </div>
               </div>
 
               <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">

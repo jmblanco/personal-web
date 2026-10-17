@@ -79,10 +79,11 @@ export interface PhilosophyPillar {
 
 export interface ProjectItem {
   title: string;
-  category: "Open Source" | "Platform & Infrastructure" | "Architecture" | "Tools";
+  category: "Open Source" | "Platform & Infrastructure" | "Architecture" | "Tools" | "AI & Agentic Systems";
   description: string;
   tags: string[];
   githubUrl?: string;
   demoUrl?: string;
   featured: boolean;
+  statusBadge?: string;
 }
