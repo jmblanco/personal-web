@@ -7,6 +7,31 @@ y este proyecto se adhiere a [Semantic Versioning (SemVer)](https://semver.org/l
 
 ---
 
+## [1.1.0] - 2026-10-17
+
+### Added
+- **Consola Interactiva en Tiempo Real en `TerminalView`**:
+  - Input CLI funcional al pie de la terminal con soporte de autocompletado con tecla `Tab`.
+  - Comandos integrados: `help`, `whoami`, `career`, `projects`, `stack`, `contact`, `theme [dark|light]`, `clear` y `exit`.
+  - Historial de comandos navegable con flechas arriba/abajo (`↑`/`↓`).
+- **Sincronización de URL y Deep-Linking de Modos**:
+  - Parámetro opcional en URL `?view=terminal` o `?view=executive` permitiendo compartir enlaces directos a la consola o a la vista ejecutiva.
+- **Optimizaciones de SEO y Metadatos**:
+  - `app/robots.ts` nativo con enlace automático al sitemap.
+  - `app/sitemap.ts` nativo para indexación en motores de búsqueda.
+- **Workflow de Validación Continua (CI)**:
+  - Pipeline de GitHub Actions en `.github/workflows/ci.yml` para validar `lint` y `build` en pull requests.
+- **Gobernanza y Plantillas Open Source**:
+  - Issue templates para reportes de bugs (`.github/ISSUE_TEMPLATE/bug_report.md`) y peticiones de características (`.github/ISSUE_TEMPLATE/feature_request.md`).
+  - Pull Request template estructurado (`.github/PULL_REQUEST_TEMPLATE.md`).
+  - Atribución opcional configurable en `content/profile.ts` y pie de página en `components/layout/footer.tsx`.
+
+### Changed
+- **Modularización de `ExecutiveView`**: Reutilización directa de los submódulos `CareerTimeline`, `ProjectsGrid` y `ContactSection` eliminando duplicidad de código.
+- **Limpieza de Assets**: Eliminación de SVGs por defecto no utilizados de Next.js en `public/`.
+
+---
+
 ## [1.0.0] - 2026-10-17
 
 ### Added

@@ -41,6 +41,22 @@ export function Footer() {
           <CopyEmailButton email={personal.email} />
         </div>
       </div>
+
+      {SITE_PROFILE.openSourceAttribution?.enabled && (
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-4 mt-6 border-t border-neutral-200/50 dark:border-neutral-800/50 text-[11px] font-mono text-neutral-400 dark:text-neutral-600 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>
+            Open Source Template · MIT License
+          </span>
+          <a
+            href={SITE_PROFILE.openSourceAttribution.templateUrl || "https://github.com/jmblanco/personal-web"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors underline underline-offset-2"
+          >
+            {SITE_PROFILE.openSourceAttribution.templateName || "personal-web"}
+          </a>
+        </div>
+      )}
     </footer>
   );
 }

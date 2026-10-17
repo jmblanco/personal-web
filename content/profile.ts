@@ -66,4 +66,10 @@ export const SITE_PROFILE: ProfileConfig = {
       "Siempre con ganas de intercambiar puntos de vista sobre arquitectura de software, diseño de plataformas internas, cultura de ingeniería o retos técnicos de gran escala.",
     ctaLinkedIn: "Conectar en LinkedIn",
   },
+  openSourceAttribution: {
+    enabled: true,
+    templateName: "Personal Web Template",
+    templateUrl: "https://github.com/jmblanco/personal-web",
+    authorName: "Jose Miguel Blanco",
+  },
 };

@@ -1,9 +1,10 @@
-import { CAREER_HISTORY, EDUCATION_LIST } from "@/content/career";
-import { FEATURED_PROJECTS } from "@/content/projects";
 import { CopyEmailButton } from "@/components/ui/copy-email-button";
 import { ArrowUpRight } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/icons";
 import { SITE_PROFILE } from "@/content/profile";
+import { CareerTimeline } from "@/components/views/career-timeline";
+import { ProjectsGrid } from "@/components/views/projects-grid";
+import { ContactSection } from "@/components/views/contact-section";
 
 export function ExecutiveView() {
   const { personal, social } = SITE_PROFILE;
@@ -87,148 +88,14 @@ export function ExecutiveView() {
         </div>
       </section>
 
-      {/* Recorrido Profesional */}
-      <section className="space-y-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-            Trayectoria Profesional
-          </h2>
-          <span className="font-mono text-xs text-neutral-400">2010 — Presente</span>
-        </div>
+      {/* Trayectoria Profesional Reutilizable */}
+      <CareerTimeline />
 
-        <div className="space-y-8 divide-y divide-neutral-200/60 dark:divide-neutral-800/60">
-          {CAREER_HISTORY.map((role) => (
-            <article key={role.role} className="pt-6 first:pt-0 space-y-2">
-              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                <h3 className="font-bold text-base text-neutral-900 dark:text-white">
-                  {role.role}
-                </h3>
-                <span className="font-mono text-xs text-neutral-400">{role.period}</span>
-              </div>
-              <div className="text-xs text-neutral-500 font-medium">
-                {role.company} · {role.location}
-              </div>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300 pt-1 leading-relaxed">
-                {role.summary}
-              </p>
-
-              <ul className="space-y-1.5 pt-1">
-                {role.highlights.map((h, i) => (
-                  <li key={i} className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 flex items-start gap-2">
-                    <span className="text-neutral-400 select-none font-mono text-xs mt-0.5">•</span>
-                    <span>{h}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex flex-wrap gap-1.5 pt-2">
-                {role.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="text-[11px] font-mono px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-400 border border-neutral-200/50 dark:border-neutral-700/50"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {/* Formación */}
-        <div className="mt-8 pt-6 border-t border-neutral-200/70 dark:border-neutral-800/70">
-          <h3 className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-3">
-            Formación &amp; Certificaciones
-          </h3>
-          <div className="space-y-2 text-sm">
-            {EDUCATION_LIST.map((edu) => (
-              <div key={edu.degree} className="flex justify-between items-baseline">
-                <div>
-                  <span className="font-semibold text-neutral-900 dark:text-white">{edu.degree}</span>
-                  <span className="text-neutral-500"> — {edu.institution}</span>
-                </div>
-                <span className="font-mono text-xs text-neutral-400">{edu.period}</span>
-              </div>
-            ))}
-            <div className="flex justify-between items-baseline pt-1">
-              <div>
-                <span className="font-semibold text-neutral-900 dark:text-white">PSM II (Professional Scrum Master II)</span>
-                <span className="text-neutral-500"> — Scrum.org</span>
-              </div>
-              <span className="font-mono text-xs text-neutral-400">Certificación</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Proyectos & Código */}
-      <section className="space-y-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
-        <div className="flex items-baseline justify-between">
-          <div>
-            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-              Proyectos &amp; Open Source
-            </h2>
-          </div>
-          <a
-            href="https://github.com/jmblanco"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors inline-flex items-center gap-1 font-mono"
-          >
-            github.com/jmblanco ↗
-          </a>
-        </div>
-
-        <div className="divide-y divide-neutral-200/60 dark:divide-neutral-800/60">
-          {FEATURED_PROJECTS.map((proj) => (
-            <article key={proj.title} className="py-4 first:pt-0 last:pb-0 space-y-1.5">
-              <div className="flex justify-between items-baseline">
-                {proj.githubUrl ? (
-                  <a
-                    href={proj.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold text-base text-neutral-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors"
-                  >
-                    <span>{proj.title}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 opacity-40 hover:opacity-100" />
-                  </a>
-                ) : (
-                  <span className="font-bold text-base text-neutral-900 dark:text-white">{proj.title}</span>
-                )}
-                <span className="text-[11px] font-mono text-neutral-400">{proj.category}</span>
-              </div>
-              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                {proj.description}
-              </p>
-              <div className="text-[11px] font-mono text-neutral-400">
-                {proj.tags.join(" · ")}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      {/* Proyectos & Código Reutilizable */}
+      <ProjectsGrid />
 
       {/* Cierre / Conversación */}
-      <section className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
-        <h3 className="font-bold text-lg text-neutral-900 dark:text-white mb-2">
-          ¿Conversamos sobre arquitectura y escala?
-        </h3>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
-          Siempre con ganas de intercambiar puntos de vista sobre sistemas distribuidos, plataformas internas, cultura de ingeniería y retos de tecnología a gran escala.
-        </p>
-        <div className="flex items-center gap-4 text-xs font-mono">
-          <CopyEmailButton email={personal.email} />
-          <a
-            href={social.linkedin.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1.5 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-medium hover:opacity-90 transition-opacity"
-          >
-            Conectar en LinkedIn ↗
-          </a>
-        </div>
-      </section>
+      <ContactSection />
     </div>
   );
 }

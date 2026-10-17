@@ -18,6 +18,13 @@ function subscribe(callback: () => void) {
 }
 
 function getSnapshot(): ViewMode {
+  if (typeof window !== "undefined") {
+    const params = new URLSearchParams(window.location.search);
+    const urlView = params.get("view");
+    if (urlView === "executive" || urlView === "terminal") {
+      return urlView;
+    }
+  }
   const saved = localStorage.getItem("jmb-view-mode");
   if (saved === "executive" || saved === "terminal") {
     return saved;
@@ -38,13 +45,19 @@ export function ViewModeProvider({ children }: { children: React.ReactNode }) {
   const setMode = React.useCallback((newMode: ViewMode) => {
     setInternalMode(newMode);
     localStorage.setItem("jmb-view-mode", newMode);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("view") !== newMode) {
+        url.searchParams.set("view", newMode);
+        window.history.replaceState({}, "", url.toString());
+      }
+    }
   }, []);
 
   const toggleMode = React.useCallback(() => {
     const next = mode === "executive" ? "terminal" : "executive";
-    setInternalMode(next);
-    localStorage.setItem("jmb-view-mode", next);
-  }, [mode]);
+    setMode(next);
+  }, [mode, setMode]);
 
 
 

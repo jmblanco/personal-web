@@ -43,6 +43,12 @@ export interface ProfileConfig {
     description: string;
     ctaLinkedIn: string;
   };
+  openSourceAttribution?: {
+    enabled: boolean;
+    templateName?: string;
+    templateUrl?: string;
+    authorName?: string;
+  };
 }
 
 export interface RoleExperience {
