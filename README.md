@@ -131,6 +131,9 @@ El proyecto incluye un pipeline nativo de GitHub Actions ([`.github/workflows/de
    ```text
    https://<tu-usuario>.github.io/<tu-repositorio>/
    ```
+> [!TIP]
+> **¿Quieres mantener tu repositorio público pero sin tus datos personales subidos a las ramas de Git?**  
+> El proyecto soporta inyección de datos personales mediante GitHub Secrets (`CUSTOM_PROFILE_B64` y `CUSTOM_CAREER_B64`) en tiempo de compilación. Consulta la sección de privacidad en la **[Guía de GitHub Pages](./docs/DEPLOYMENT_GITHUB_PAGES.md#-privacidad-y-despliegue-con-tus-datos-personales-sin-pii-en-el-repo)**.
 
 👉 Consulta la **[Guía detallada de despliegue en GitHub Pages](./docs/DEPLOYMENT_GITHUB_PAGES.md)** con instrucciones para dominios personalizados.
 
