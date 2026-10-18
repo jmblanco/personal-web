@@ -41,16 +41,21 @@ jobs:
           CUSTOM_PROJECTS_B64: ${{ secrets.CUSTOM_PROJECTS_B64 }}
         run: |
           if [ -n "$CUSTOM_PROFILE_B64" ]; then
-            echo "Injecting custom profile.ts from secret..."
-            echo "$CUSTOM_PROFILE_B64" | base64 --decode > content/profile.ts
+            echo "Injecting custom profile.ts from secret (chars: ${#CUSTOM_PROFILE_B64})..."
+            echo "$CUSTOM_PROFILE_B64" | tr -d '\r\n ' | base64 -d > content/profile.ts
+            head -n 10 content/profile.ts
+          else
+            echo "CUSTOM_PROFILE_B64 secret not found or empty."
           fi
           if [ -n "$CUSTOM_CAREER_B64" ]; then
-            echo "Injecting custom career.ts from secret..."
-            echo "$CUSTOM_CAREER_B64" | base64 --decode > content/career.ts
+            echo "Injecting custom career.ts from secret (chars: ${#CUSTOM_CAREER_B64})..."
+            echo "$CUSTOM_CAREER_B64" | tr -d '\r\n ' | base64 -d > content/career.ts
+          else
+            echo "CUSTOM_CAREER_B64 secret not found or empty."
           fi
           if [ -n "$CUSTOM_PROJECTS_B64" ]; then
-            echo "Injecting custom projects.ts from secret..."
-            echo "$CUSTOM_PROJECTS_B64" | base64 --decode > content/projects.ts
+            echo "Injecting custom projects.ts from secret (chars: ${#CUSTOM_PROJECTS_B64})..."
+            echo "$CUSTOM_PROJECTS_B64" | tr -d '\r\n ' | base64 -d > content/projects.ts
           fi
 
       - name: Build static site
