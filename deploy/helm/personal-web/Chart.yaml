@@ -1,0 +1,11 @@
+apiVersion: v2
+name: personal-web
+description: A production-ready, open-source Helm chart for Personal Web / Digital Hub
+type: application
+version: 1.1.0
+appVersion: "1.1.0"
+keywords:
+  - nextjs
+  - portfolio
+  - web
+  - static

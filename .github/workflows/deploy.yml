@@ -1,0 +1,75 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Pages
+        id: configure-pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Inject custom profile configuration (if secret present)
+        env:
+          CUSTOM_PROFILE_B64: ${{ secrets.CUSTOM_PROFILE_B64 }}
+          CUSTOM_CAREER_B64: ${{ secrets.CUSTOM_CAREER_B64 }}
+          CUSTOM_PROJECTS_B64: ${{ secrets.CUSTOM_PROJECTS_B64 }}
+        run: |
+          if [ -n "$CUSTOM_PROFILE_B64" ]; then
+            echo "Injecting custom profile.ts from secret..."
+            echo "$CUSTOM_PROFILE_B64" | base64 --decode > content/profile.ts
+          fi
+          if [ -n "$CUSTOM_CAREER_B64" ]; then
+            echo "Injecting custom career.ts from secret..."
+            echo "$CUSTOM_CAREER_B64" | base64 --decode > content/career.ts
+          fi
+          if [ -n "$CUSTOM_PROJECTS_B64" ]; then
+            echo "Injecting custom projects.ts from secret..."
+            echo "$CUSTOM_PROJECTS_B64" | base64 --decode > content/projects.ts
+          fi
+
+      - name: Build static site
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.configure-pages.outputs.base_path }}
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

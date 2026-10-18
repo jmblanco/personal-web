@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: production
+
+resources:
+  - ../../base
+
+images:
+  # Sobrescribe aquí la imagen con tu registro propio
+  - name: YOUR_IMAGE_REPOSITORY
+    newName: "tu-registro/tu-usuario/personal-web"
+    newTag: "v1.0.0"
+
+replicas:
+  - name: personal-web
+    count: 2
+
+patches:
+  - target:
+      kind: Ingress
+      name: personal-web
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: tu-dominio.com
+      - op: add
+        path: /metadata/annotations
+        value:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+      - op: add
+        path: /spec/tls
+        value:
+          - hosts:
+              - tu-dominio.com
+            secretName: personal-web-prod-tls
