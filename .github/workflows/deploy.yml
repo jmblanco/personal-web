@@ -42,23 +42,29 @@ jobs:
           CUSTOM_CAREER_B64: ${{ secrets.CUSTOM_CAREER_B64 }}
           CUSTOM_PROJECTS_B64: ${{ secrets.CUSTOM_PROJECTS_B64 }}
         run: |
-          if [ -n "$CUSTOM_PROFILE_B64" ]; then
-            echo "Injecting custom profile.ts from secret (chars: ${#CUSTOM_PROFILE_B64})..."
-            echo "$CUSTOM_PROFILE_B64" | tr -d '\r\n ' | base64 -d > content/profile.ts
-            head -n 10 content/profile.ts
-          else
-            echo "CUSTOM_PROFILE_B64 secret not found or empty."
-          fi
-          if [ -n "$CUSTOM_CAREER_B64" ]; then
-            echo "Injecting custom career.ts from secret (chars: ${#CUSTOM_CAREER_B64})..."
-            echo "$CUSTOM_CAREER_B64" | tr -d '\r\n ' | base64 -d > content/career.ts
-          else
-            echo "CUSTOM_CAREER_B64 secret not found or empty."
-          fi
-          if [ -n "$CUSTOM_PROJECTS_B64" ]; then
-            echo "Injecting custom projects.ts from secret (chars: ${#CUSTOM_PROJECTS_B64})..."
-            echo "$CUSTOM_PROJECTS_B64" | tr -d '\r\n ' | base64 -d > content/projects.ts
-          fi
+          node -e '
+            const fs = require("fs");
+            const inject = (envVar, filePath) => {
+              const val = process.env[envVar];
+              if (!val || !val.trim()) {
+                console.log(envVar + " is not set or empty. Skipping.");
+                return;
+              }
+              try {
+                const cleaned = val.replace(/[^A-Za-z0-9+/=]/g, "");
+                const decoded = Buffer.from(cleaned, "base64").toString("utf-8");
+                fs.writeFileSync(filePath, decoded, "utf-8");
+                console.log("Successfully injected " + filePath + " from " + envVar + " (" + decoded.length + " bytes)");
+              } catch (err) {
+                console.error("Failed to decode " + envVar + ":", err);
+                process.exit(1);
+              }
+            };
+
+            inject("CUSTOM_PROFILE_B64", "content/profile.ts");
+            inject("CUSTOM_CAREER_B64", "content/career.ts");
+            inject("CUSTOM_PROJECTS_B64", "content/projects.ts");
+          '
 
       - name: Build static site
         run: npm run build
