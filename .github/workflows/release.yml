@@ -1,0 +1,73 @@
+name: Automated Release & Tagging
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force recreate release even if tag exists"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Check & Create Release
+    runs-on: ubuntu-latest
+    if: github.repository == 'jmblanco/personal-web'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Determine target version and tag
+        id: version_check
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Detected version from package.json: $VERSION (tag: $TAG)"
+
+          if git ls-remote --tags origin "refs/tags/$TAG" | grep -q "refs/tags/$TAG"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag $TAG already exists on remote origin."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag $TAG does NOT exist on remote origin. Release will be created."
+          fi
+
+      - name: Extract Release Notes from CHANGELOG.md
+        if: steps.version_check.outputs.exists == 'false' || inputs.force == 'true'
+        run: |
+          node scripts/extract-release-notes.mjs "${{ steps.version_check.outputs.version }}" RELEASE_NOTES.md
+
+      - name: Create Git Tag and GitHub Release
+        if: steps.version_check.outputs.exists == 'false' || inputs.force == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version_check.outputs.tag }}
+          VERSION: ${{ steps.version_check.outputs.version }}
+        run: |
+          echo "Creating GitHub Release for $TAG..."
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes-file RELEASE_NOTES.md \
+            --target main
+
+          echo "Successfully created release and tag $TAG!"
